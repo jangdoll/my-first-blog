@@ -1,10 +1,13 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import View
+from django.views.generic import CreateView, TemplateView
 
 from .models import Post, Comment
 from django.shortcuts import render, get_object_or_404
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, CreateUserForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
@@ -99,3 +102,14 @@ def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('post_detail', pk=comment.post.pk)
+
+
+class SignupView(CreateView):
+    template_name = 'registration/signup.html'
+    # form_class = UserCreationForm
+    form_class = CreateUserForm
+    success_url = reverse_lazy('create_user_done')
+
+
+class RegisteredView(TemplateView):
+    template_name = 'registration/signup_done.html'
