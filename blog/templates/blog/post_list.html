@@ -2,13 +2,15 @@
 
 {% block content %}
     {% for post in posts %}
-        <div class="post">
-            <div class="date">
-                <p>published: {{ post.published_date }}</p>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ forloop.counter }}.{{ post.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ post.published_date }}</h6>
+                <p class="card-text">{{ post.text|linebreaksbr }}</p>
+                <h6 class="card-subtitle mb-2 text-muted">{{ post.comments.all.count }}개의 댓글</h6>
+                <a class="btn btn-primary" href="{% url 'post_detail' pk=post.pk %}">Detail</a>
+                {#                <a href="#" class="card-link">Another link</a>#}
             </div>
-            <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-            <p>{{ post.text|linebreaksbr }}</p>
-            <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a>
         </div>
     {% endfor %}
 {% endblock %}
