@@ -1,33 +1,53 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <div class="post">
-        {% if post.published_date %}
-            <div class="date">
-                {{ post.published_date }}
-                {% if user.is_authenticated %}
-                    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><i class="fas fa-pencil-alt"></i></a>
-                    <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><i class="fas fa-trash-alt"></i></a>
-                {% endif %}
-            </div>
-        {% else %}
-            <a class="btn btn-outline-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
-            <a class="btn btn-outline-primary icon" href="{% url 'post_edit' pk=post.pk %}"><i class="fas fa-pencil-alt"></i></a>
-            <a class="btn btn-outline-primary icon" href="{% url 'post_remove' pk=post.pk %}"><i class="fas fa-trash-alt"></i></a>
-        {% endif %}
+    <div class="card">
+        <div class="card-body">
+            {% if post.published_date %}
+                <div class="date">
+                    {{ post.author }}님의 게시글
+                    {% if user.is_authenticated %}
+                        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><i
+                                class="fas fa-pencil-alt"></i></a>
+                        <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><i
+                                class="fas fa-trash-alt"></i></a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <a class="btn btn-outline-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+                <a class="btn btn-outline-primary icon" href="{% url 'post_edit' pk=post.pk %}"><i
+                        class="fas fa-pencil-alt"></i></a>
+                <a class="btn btn-outline-primary icon" href="{% url 'post_remove' pk=post.pk %}"><i
+                        class="fas fa-trash-alt"></i></a>
+            {% endif %}
 
-        <h1>{{ post.title }}</h1>
-        <p>{{ post.text|linebreaksbr }}</p>
+
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p>{{ post.text|linebreaksbr }}</p>
+
+            <a href="{% url 'post_like_toggle' pk=post.pk %}">
+                {% if user in post.like_users.all %}
+                    <h3 style="color: #d9534f"><i class="fas fa-heart"></i> : {{ post.like_count }}</h3>
+                {% else %}
+                    <h3 style="color: #d9534f"><i class="far fa-heart"></i> : {{ post.like_count }}</h3>
+                {% endif %}
+            </a>
+            <h6 class="card-subtitle mb-2 text-muted">{{ post.published_date }}</h6>
+        </div>
     </div>
     <hr>
-    <a class="btn btn-link" href="{% url 'add_comment_to_post' pk=post.pk%}">댓글추가</a>
+    {% if user.is_authenticated %}
+        <a class="btn btn-link" href="{% url 'add_comment_to_post' pk=post.pk %}">댓글추가</a>
+    {% endif %}
     {% for comment in post.comments.all %}
         {% if user.is_authenticated or comment.approved_comment %}
-        <div class="comment">
+            <div class="comment">
             {{ comment.created_date }}
             {% if not comment.approved_comment %}
-                    <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fas fa-check-circle"></i> </a>
-                    <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fas fa-trash-alt"></i></a>
+                <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><i
+                        class="fas fa-check-circle"></i> </a>
+                <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i
+                        class="fas fa-trash-alt"></i></a>
             {% endif %}
             <div class="date">
                 <strong>{{ comment.author }}</strong>

@@ -5,11 +5,12 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView, TemplateView
 
+import blog
 from .models import Post, Comment
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostForm, CommentForm, CreateUserForm
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 class IndexView(View):
@@ -113,3 +114,51 @@ class SignupView(CreateView):
 
 class RegisteredView(TemplateView):
     template_name = 'registration/signup_done.html'
+
+
+# @login_required
+# def post_like_toggle(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#
+#     user = request.user
+#     print(user)
+#
+#     profile = Profile.objects.get(user=user)
+#     print(profile)
+#
+#     check_like_post = profile.like_posts.filter(pk=post.pk)
+#
+#     if check_like_post.exists():
+#         profile.like_posts.remove(post)
+#         post.like_count -= 1
+#         post.save()
+#     else:
+#         profile.like_posts.add(post)
+#         post.like_count += 1
+#         post.save()
+#
+#     return redirect('post_detail', pk=post.pk)
+
+
+@login_required
+def post_like_toggle(request, pk):
+    next_path = request.GET.get('next')
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    filtered_like_posts = user.like_posts.filter(pk=post.pk)
+
+    if filtered_like_posts.exists():
+        user.like_posts.remove(post)
+        post.like_count -= 1
+        user.save()
+        post.save()
+    else:
+        user.like_posts.add(post)
+        post.like_count += 1
+        user.save()
+        post.save()
+
+    if next_path:
+        return redirect(next_path)
+    return redirect('post_detail', pk=post.pk)
