@@ -1,10 +1,10 @@
-.page-header { background-color: #ff9400; margin-top: 0; padding: 20px 20px 20px 40px; }
+body { font-family: 'Jua', sans-serif }
+.page-header { background-color: #449d44; margin-top: 0; padding: 20px 20px 20px 40px; }
 .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active { color: #ffffff; font-size: 36pt; text-decoration: none; }
 
 .content {  /*margin-left: 40px;*/ }
 
-h1, h2, h3, h4 { font-family: 'Lobster', cursive; }
-.date { color: #828282; }
+.date { color: #828282;  width: 100%}
 
 .save { float: right; }
 .post-form textarea, .post-form input { width: 100%; }
@@ -19,3 +19,9 @@ h1, h2, h3, h4 { font-family: 'Lobster', cursive; }
 .icon { padding: 10px 27px;}
 .container { margin-top: 10px; }
 .card-body>p { height: 50px; text-overflow: ellipsis; overflow-y: hidden;}
+.comment-box { padding: 0 0 0 15px; }
+.comment-box>textarea{ height: 80px; }
+.comment-box>button{ margin: 0 auto; }
+textarea { resize: none; }
+.comment-form>input { margin-bottom: 13px; }
+.input-group-append {margin: -4.5px 0 0 -6px;}

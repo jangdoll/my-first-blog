@@ -18,15 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.contrib.auth import views
+
+from blog.forms import LoginForm
 from blog.views import SignupView, RegisteredView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    # url(r'^account/', include('allauth.urls')),
-    # url(r'^admin/', admin.site.urls),
-    url(r'^account/login/$', views.login, name='login'),
-    url(r'^account/logout/$', views.logout, name='logout', kwargs={'next_page': '/post'}),
+    url(r'^summernote/', include('django_summernote.urls')),
+    url(r'^account/login/$', views.LoginView.as_view(authentication_form=LoginForm), name='login'),
+    url(r'^account/logout/$', views.logout, name='logout', kwargs={'next_page': '/'}),
     url(r'^signup/$', SignupView.as_view(), name='signup', kwargs={'next_page': 'account/login/'}),
     url(r'^accounts/login/done$', RegisteredView.as_view(), name='create_user_done')
 ]

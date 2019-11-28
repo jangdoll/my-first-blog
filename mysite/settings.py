@@ -41,26 +41,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'blog',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
+    'django_summernote',
 ]
 
+MEDIA_URL = '/media/'
+SUMMERNOTE_CONFIG = {
+    'iframe': True,
+    'summernote': {
+        # As an example, using Summernote Air-mode
+        'airMode': False,
+        'width': '100%',
+        'height': '480',
+    },
+    'disable_attachment': True,
+}
+
 AUTH_USER_MODEL = 'blog.User'
-#
-# AUTHENTICATION_BACKENDS = (
-#     'django.contrib.auth.backends.ModelBackend',  # <- 디폴트 모델 백엔드
-#     'allauth.account.auth_backends.AuthenticationBackend', # <- 추가
-# )
-#
+
 SITE_ID = 1
-#
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
-# SOCIALACCOUNT_AUTO_SIGNUP = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/post'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

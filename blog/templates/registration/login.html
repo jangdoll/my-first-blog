@@ -6,20 +6,10 @@
     {% endif %}
 
     <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-
-        <input class="btn btn-primary" type="submit" value="login" />
-        <a href="{% url 'signup' %}"><input class="btn btn btn-info" type="button" value="signup" /></a>
-        <input type="hidden" name="next" value="{{ next }}" />
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="로그인"/>
+        <a href="{% url 'signup' %}"><input class="btn btn btn-info" type="button" value="회원가입"/></a>
+        <input type="hidden" name="next" value="{{ next }}"/>
     </form>
 {% endblock %}

@@ -2,10 +2,12 @@
 
 {% block content %}
 
-    <h1>New post</h1>
+    <h1>게시글 작성</h1>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="save btn btn-primary">Save</button>
-        <a href="{% url 'post_list' %}"><button type="button" class="save btn btn-danger">cancel</button></a>
+        <button type="submit" class="save btn btn-primary">저장</button>
+        <a href="{% url 'post_list' %}">
+            <button type="button" class="save btn btn-danger">취소</button>
+        </a>
     </form>
 {% endblock %}

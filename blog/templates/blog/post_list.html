@@ -6,10 +6,10 @@
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.author }}님의 게시글</h6>
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.published_date }}</h6>
-                <h5 class="card-title">{{ post.title }}</h5>
-                <p class="card-text">{{ post.text|linebreaksbr }}</p>
+                <h3 class="card-title">{{ post.title }}</h3>
+                <p class="card-text">{{ post.text|striptags|truncatechars:200|linebreaksbr}}</p>
                 <h6 class="card-subtitle mb-2 text-muted">{{ post.comments.all.count }}개의 댓글 | 좋아요 : {{ post.like_count }}</h6>
-                <a class="btn btn-primary" href="{% url 'post_detail' pk=post.pk %}">Detail</a>
+                <a class="btn btn-primary" href="{% url 'post_detail' pk=post.pk %}">자세히</a>
                 {#                <a href="#" class="card-link">Another link</a>#}
             </div>
         </div>
