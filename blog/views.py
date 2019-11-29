@@ -1,9 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView, TemplateView
+from rest_framework.utils import json
 
 import blog
 from .models import Post, Comment
@@ -23,13 +25,6 @@ def post_list(request):
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
-@login_required
-def comment_remove(request, pk):
-    comment = get_object_or_404(Comment, pk=pk)
-    comment.delete()
-    return redirect('post_detail', pk=comment.post.pk)
-
-
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -37,25 +32,29 @@ def post_detail(request, pk):
 
         if form.is_valid():
             comment = form.save(commit=False)
-            print(comment)
             comment.post = post
-            print(post)
             comment.save()
             return redirect('post_detail', pk=post.pk)
         else:
-            post_comment = request.POST.get('password_confirm')
-            post_id = request.POST.get('author')
-            comment = Comment.objects.filter(password=post_comment).filter(id=post_id).values_list(flat=True).distinct()
+            comment_id = request.POST.get('pk')
+            comment_password = request.POST.get('comment-password')
+            comment = Comment.objects.filter(password=comment_password).filter(id=comment_id).values_list(flat=True).distinct()
             if comment:
                 clist = list(comment)
                 print(clist[-1])
-                if clist[-1] == int(post_id):
+                if clist[-1] == int(comment_id):
                     print('삭제')
-                    return comment_remove(request, pk=post_id)
-                else:
-                    print('실패')
+                    comment = get_object_or_404(Comment, pk=comment_id)
+                    comment.delete()
+                    success = True
+                    message = '댓글이 삭제 되었습니다.'
+                    context = {'message': message, 'success': success}
             else:
                 print('비밀번호 틀림')
+                message = '비밀번호가 일치하지 않습니다.'
+                success = False
+                context = {'message': message, 'success': success}
+            return HttpResponse(json.dumps(context))
     else:
         form = CommentForm()
 

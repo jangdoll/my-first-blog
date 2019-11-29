@@ -46,8 +46,6 @@ class CreateUserForm(UserCreationForm):
             user.save()
         return user
 
-    # User.objects.get()
-
 
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -59,4 +57,3 @@ class LoginForm(AuthenticationForm):
 
 class CommentDelete(forms.Form):
     password_confirm = forms.CharField(label='비밀번호', widget=forms.PasswordInput(attrs={'class': 'form-control', 'name': 'password_confirm'}), required=True)
-    comment_id = forms.CharField(label='닉네임', widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'author'}), required=True)

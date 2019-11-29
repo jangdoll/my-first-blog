@@ -53,37 +53,53 @@
         </div>
     </form>
     {% for comment in post.comments.all %}
-            <div class="comment row">
-                <div class="col-6">{{ comment.created_date }}</div>
-{#                {% if user.is_authenticated or comment.approved_comment %}#}
-                    <form id="pass-form" method="POST">{% csrf_token %}
-                        <div>
-                            <div class="input-group mb-3">
-                                <input type="password" name="password_confirm" class="form-control col-5" placeholder="비밀번호" aria-label="비밀번호" aria-describedby="button-addon2">
-                                <input type="text" name="author" style="display: none" class="form-control" value="{{ comment.id }}">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">삭제</button>
-                                </div>
-                            </div>
+        <div class="comment row">
+            <div class="col-md-9">{{ comment.created_date }}</div>
+            <div class="col-md-3">
+            <form id="pass-form" method="POST">{% csrf_token %}
+                <div>
+                    <div class="input-group mb-3">
+                        <input type="password" name="password_confirm" class="form-control col-5 comment-password" placeholder="비밀번호"
+                               aria-label="비밀번호" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button data-id="{{ comment.id }}" class="btn btn-outline-secondary btn-delete" type="button">삭제</button>
                         </div>
-                    </form>
-{#                {% endif %}#}
-                <div class="date">
-                    <p><strong>{{ comment.author }}</strong> : {{ comment.text }}</p>
+                    </div>
                 </div>
+            </form>
+                </div>
+            <div class="date">
+                <p><strong>{{ comment.author }}</strong> : {{ comment.text }}</p>
             </div>
+        </div>
     {% empty %}
         <p>댓글이 없습니다</p>
     {% endfor %}
-    {#    <script>#}
-    {#        function myFunction() {#}
-    {#            var x = document.getElementById('pass-form');#}
-    {#            if (x.style.display === 'none') {#}
-    {#                x.style.display = null;#}
-    {#            } else {#}
-    {#                x.style.display = 'none';#}
-    {#            }#}
-    {#        }#}
-    {#    </script>#}
+    <script type="text/javascript">
+        $('.btn-delete').click(function() {
+            console.log($(this).data('id'));
+            console.log($(this).parent().parent().find('.comment-password').val());
+            var comment = $(this).parents()[5];
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'post_detail' pk=post.pk %}',
+                data: {
+                    'pk': $(this).data('id'),
+                    'comment-password': $(this).parent().parent().find('.comment-password').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response.message);
+                    if(response.success === true) {
+                        comment.remove();
+                        alert(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}
 

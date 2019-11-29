@@ -13,15 +13,16 @@ body { font-family: 'Jua', sans-serif }
 
 .post { margin-bottom: 70px; }
 .post h1 a, .post h1 a:visited { color: #000000; }
-.comment { margin: 20px 0px 20px 20px; }
+.comment { margin: 20px 0 20px 20px; }
 .card { display:block; margin: 20px 0 20px 0; }
 .btn { margin:5px 0 0 5px;}
 .icon { padding: 10px 27px;}
 .container { margin-top: 10px; }
-.card-body>p { height: 50px; text-overflow: ellipsis; overflow-y: hidden;}
+/*.card-body>p { height: 50px; text-overflow: ellipsis; overflow-y: hidden;}*/
 .comment-box { padding: 0 0 0 15px; }
 .comment-box>textarea{ height: 80px; }
 .comment-box>button{ margin: 0 auto; }
 textarea { resize: none; }
 .comment-form>input { margin-bottom: 13px; }
 .input-group-append {margin: -4.5px 0 0 -6px;}
+.comment-display { display: none }
